@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/jordanabderrachid/facebook-messenger/messenger"
@@ -17,9 +18,9 @@ func main() {
 	m := messenger.NewMessenger(accessToken)
 	response, err := m.SendTextMessage(recipientID, text)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-	fmt.Println(response)
+	log.Print(response)
 }
 
 func getInput(message string, r *bufio.Reader) string {

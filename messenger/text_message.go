@@ -1,8 +1,10 @@
 package messenger
 
-import "io"
-import "encoding/json"
-import "bytes"
+import (
+	"bytes"
+	"encoding/json"
+	"io"
+)
 
 const maxTextLength = 320
 
