@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/jordanabderrachid/facebook-messenger/messenger"
 )
@@ -13,10 +14,10 @@ func main() {
 	r := bufio.NewReader(os.Stdin)
 	accessToken := getInput("Bot access token: ", r)
 	recipientID := getInput("Recipient id: ", r)
-	text := getInput("Text: ", r)
+	imageURL := getInput("Image url: ", r)
 
 	m := messenger.NewMessenger(accessToken)
-	response, err := m.SendTextMessage(recipientID, text)
+	response, err := m.SendImageAttachment(recipientID, imageURL)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -30,5 +31,5 @@ func getInput(message string, r *bufio.Reader) string {
 		panic(err)
 	}
 
-	return value
+	return strings.Replace(value, "\n", "", -1)
 }

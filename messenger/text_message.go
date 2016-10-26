@@ -13,20 +13,7 @@ type textMessage struct {
 	text        string
 }
 
-type facebookTextMessage struct {
-	Recipient recipient `json:"recipient"`
-	Message   message   `json:"message"`
-}
-
-type recipient struct {
-	RecipientID string `json:"id"`
-}
-
-type message struct {
-	Text string `json:"text"`
-}
-
-func newTextMessage(recipientID string, text string) textMessage {
+func newTextMessage(recipientID, text string) textMessage {
 	if len(text) > maxTextLength {
 		text = text[:maxTextLength]
 	}
@@ -38,16 +25,16 @@ func newTextMessage(recipientID string, text string) textMessage {
 }
 
 func (tm textMessage) toBody() (io.Reader, error) {
-	ftm := facebookTextMessage{
-		Recipient: recipient{
+	p := requestPayload{
+		Recipient: &recipient{
 			RecipientID: tm.recipientID,
 		},
-		Message: message{
+		Message: &message{
 			Text: tm.text,
 		},
 	}
 
-	data, err := json.Marshal(ftm)
+	data, err := json.Marshal(p)
 	if err != nil {
 		return nil, err
 	}

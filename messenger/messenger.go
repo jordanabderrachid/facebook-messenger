@@ -20,6 +20,10 @@ type Messenger struct {
 	client *http.Client
 }
 
+type sendable interface {
+	toBody() (io.Reader, error)
+}
+
 // NewMessenger comment
 func NewMessenger(token string) *Messenger {
 	return &Messenger{
@@ -36,7 +40,22 @@ func (m *Messenger) SendTextMessage(recipientID, text string) (Response, error) 
 	}
 
 	tm := newTextMessage(recipientID, text)
-	body, err := tm.toBody()
+	return m.send(tm)
+}
+
+// SendImageAttachment comment
+func (m *Messenger) SendImageAttachment(recipientID, imageURL string) (Response, error) {
+	err := m.checkToken()
+	if err != nil {
+		return Response{}, err
+	}
+
+	ia := newImageAttachment(recipientID, imageURL)
+	return m.send(ia)
+}
+
+func (m *Messenger) send(data sendable) (Response, error) {
+	body, err := data.toBody()
 	if err != nil {
 		return Response{}, err
 	}
@@ -48,6 +67,22 @@ func (m *Messenger) SendTextMessage(recipientID, text string) (Response, error) 
 	}
 
 	return handleReponse(resp)
+}
+
+func (m *Messenger) getURL() string {
+	return fmt.Sprintf(urlFormat, m.Token)
+}
+
+func (m *Messenger) apiCall(body io.Reader) (*http.Response, error) {
+	return m.client.Post(m.getURL(), contentType, body)
+}
+
+func (m *Messenger) checkToken() error {
+	if !isTokenSet(m.Token) {
+		return errors.New("token must be set")
+	}
+
+	return nil
 }
 
 func handleReponse(resp *http.Response) (Response, error) {
@@ -92,22 +127,6 @@ func parseBadRequestResponse(body io.ReadCloser) error {
 	return brr.toError()
 }
 
-func (m *Messenger) checkToken() error {
-	if !isTokenSet(m.Token) {
-		return errors.New("token must be set")
-	}
-
-	return nil
-}
-
 func isTokenSet(token string) bool {
 	return token != ""
-}
-
-func (m *Messenger) getURL() string {
-	return fmt.Sprintf(urlFormat, m.Token)
-}
-
-func (m *Messenger) apiCall(data io.Reader) (*http.Response, error) {
-	return m.client.Post(m.getURL(), contentType, data)
 }
