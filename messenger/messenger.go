@@ -65,6 +65,17 @@ func (m *Messenger) SendAudioAttachment(recipientID, audioURL string) (Response,
 	return m.send(aa)
 }
 
+// SendVideoAttachment comment
+func (m *Messenger) SendVideoAttachment(recipientID, videoURL string) (Response, error) {
+	err := m.checkToken()
+	if err != nil {
+		return Response{}, err
+	}
+
+	va := newVideoAttachment(recipientID, videoURL)
+	return m.send(va)
+}
+
 func (m *Messenger) send(data sendable) (Response, error) {
 	body, err := data.toBody()
 	if err != nil {
