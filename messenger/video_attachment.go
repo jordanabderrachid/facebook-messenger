@@ -6,8 +6,6 @@ import (
 	"io"
 )
 
-const videoAttachmentType = "video"
-
 type videoAttachment struct {
 	recipientID string
 	videoURL    string

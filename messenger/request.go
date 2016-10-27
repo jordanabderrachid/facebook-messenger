@@ -1,5 +1,46 @@
 package messenger
 
+const (
+	imageAttachmentType = "image"
+	audioAttachmentType = "audio"
+	videoAttachmentType = "video"
+	fileAttachmentType  = "file"
+
+	textQuickReplyContentType     = "text"
+	locationQuickReplyContentType = "location"
+
+	genericTemplateType = "generic"
+	buttonTemplateType  = "button"
+	receiptTemplateType = "receipt"
+
+	webURLButtonType      = "web_url"
+	postbackButtonType    = "postback"
+	phoneNumberButtonType = "phone_number"
+	shareButtonType       = "element_share"
+	paymentButtonType     = "payment"
+
+	// CompactWebviewHeightRatio comment
+	CompactWebviewHeightRatio = "compact"
+	// TallWebviewHeightRatio comment
+	TallWebviewHeightRatio = "tall"
+	// FullWebviewHeightRatio comment
+	FullWebviewHeightRatio = "full"
+
+	// FixedAmountPaymentType comment
+	FixedAmountPaymentType = "FIXED_AMOUNT"
+	// FlexibleAmountPaymentType comment
+	FlexibleAmountPaymentType = "FLEXIBLE_AMOUNT"
+
+	// ShippingAddressRequestedUserInfo comment
+	ShippingAddressRequestedUserInfo = "shipping_address"
+	// ContactNameRequestedUserInfo comment
+	ContactNameRequestedUserInfo = "contact_name"
+	// ContactPhoneRequestedUserInfo comment
+	ContactPhoneRequestedUserInfo = "contact_phone"
+	//ContactEmailRequestedUserInfo comment
+	ContactEmailRequestedUserInfo = "contact_email"
+)
+
 type requestPayload struct {
 	Recipient *recipient `json:"recipient,omitempty"`
 	Message   *message   `json:"message,omitempty"`

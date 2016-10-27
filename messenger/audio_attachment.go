@@ -6,8 +6,6 @@ import (
 	"io"
 )
 
-const audioAttachmentType = "audio"
-
 type audioAttachment struct {
 	recipientID string
 	audioURL    string

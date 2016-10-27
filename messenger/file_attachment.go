@@ -6,8 +6,6 @@ import (
 	"io"
 )
 
-const fileAttachmentType = "file"
-
 type fileAttachment struct {
 	recipientID string
 	fileURL     string
